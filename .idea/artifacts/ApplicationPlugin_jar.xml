@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ApplicationPlugin:jar">
+    <output-path>$USER_HOME$/Downloads/Minecraft Server 1.21.4/plugins</output-path>
+    <root id="archive" name="ApplicationPlugin.jar">
+      <element id="module-output" name="ApplicationPlugin" />
+    </root>
+  </artifact>
+</component>

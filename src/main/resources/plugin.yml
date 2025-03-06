@@ -1,0 +1,56 @@
+name: ApplicationPlugin
+version: '1.0-SNAPSHOT'
+main: org.mateh.applicationPlugin.Main
+api-version: '1.21'
+commands:
+  gamemode:
+    description: Changes the player's game mode.
+    usage: /gamemode <type> [player]
+    permission: applicationPlugin.gamemode
+  god:
+    description: Activate god mode.
+    usage: /god [player]
+    permission: applicationPlugin.god
+  openinv:
+    description: Opens a player's inventory for editing.
+    usage: /openinv <player>
+    permission: applicationPlugin.openinv
+  enderchest:
+    description: Opens a player's Ender Chest.
+    usage: /enderchest [player]
+    permission: applicationPlugin.enderchest
+  fix:
+    description: Restores the durability of the item in hand.
+    usage: /fix
+    permission: applicationPlugin.fix
+  tpa:
+    description: Send a teleport request.
+    usage: /tpa <player>
+    permission: applicationPlugin.tpa
+  trash:
+    description: Opens a menu for deleting items.
+    usage: /trash
+    permission: applicationPlugin.trash
+
+permissions:
+  applicationPlugin.gamemode:
+    description: Allows the use of the /gamemode command.
+    default: op
+  applicationPlugin.god:
+    description: Allows the use of the /god command.
+    default: op
+  applicationPlugin.openinv:
+    description: Allows the user to open other player's inventories.
+    default: op
+  applicationPlugin.enderchest:
+    description: Allows the user to open the Ender Chest of a player.
+    default: op
+  applicationPlugin.fix:
+    description: Allows the use of the /fix command.
+    default: op
+  applicationPlugin.tpa:
+    description: Allows the use of the /tpa command.
+    default: true
+  applicationPlugin.trash:
+    description: Allows the use of the /trash command.
+    default: true
