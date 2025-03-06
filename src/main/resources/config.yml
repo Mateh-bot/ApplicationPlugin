@@ -1,16 +1,21 @@
 messages:
   noPermission: "You do not have permission to use this command."
+  playerNotFound: "Player not found."
+
   usageGamemode: "Use: /gamemode <type> [player]"
   invalidGamemode: "Invalid game mode specified."
-  playerNotFound: "Player not found."
   gamemodeChanged: "Game mode of {player} has been changed to {mode}."
   godModeToggled: "God mode for {player} is now {state}."
+
   usageOpenInv: "Usage: /openinv <player>"
   openInvOpened: "You have opened the inventory of {player}."
+
   usageEnderchest: "Usage: /enderchest [player]"
   enderchestOpened: "You have opened the Ender Chest of {player}."
+
   noItemInHand: "You must be holding an item to fix it."
   itemFixed: "Your held item has been fixed."
+
   usageTpa: "Usage: /tpa <player | accept | deny>"
   noPendingTpa: "You have no pending teleport requests."
   requesterOffline: "The player who sent the teleport request is offline."
@@ -20,6 +25,7 @@ messages:
   tpaAcceptedReceiver: "You have accepted the teleport request from {player}."
   tpaDenied: "Your teleport request has been denied by {player}."
   tpaDeniedReceiver: "You have denied the teleport request."
+
   trashTitle: "Trash"
   trashOpened: "You have opened the trash inventory. Items placed here will be permanently deleted when closed."
   trashCleared: "Trash has been cleared."

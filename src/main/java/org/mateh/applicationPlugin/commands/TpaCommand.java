@@ -11,16 +11,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.mateh.applicationPlugin.Main;
+import org.mateh.applicationPlugin.managers.TpaManager;
 
 import java.util.*;
 
 public class TpaCommand implements CommandExecutor, TabCompleter {
 
     private final Main main;
-    public static Map<String, String> pendingTPA = new HashMap<>();
+    private final TpaManager tpaManager;
 
-    public TpaCommand(Main main) {
+    public TpaCommand(Main main, TpaManager tpaManager) {
         this.main = main;
+        this.tpaManager = tpaManager;
     }
 
     @Override
@@ -29,7 +31,6 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(main.getConfig().getString("messages.noPermission"));
             return true;
         }
-
         if (!(sender instanceof Player)) {
             sender.sendMessage("This command can only be executed by a player.");
             return true;
@@ -44,29 +45,28 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
         String subcommand = args[0].toLowerCase();
 
         if (subcommand.equals("accept")) {
-            String targetUUID = player.getUniqueId().toString();
-            if (!pendingTPA.containsKey(targetUUID)) {
+            if (!tpaManager.hasRequest(player)) {
                 player.sendMessage(main.getConfig().getString("messages.noPendingTpa"));
                 return true;
             }
-            String requesterUUID = pendingTPA.remove(targetUUID);
-            Player requester = Bukkit.getPlayer(UUID.fromString(requesterUUID));
+            Player requester = tpaManager.getRequester(player);
             if (requester == null) {
                 player.sendMessage(main.getConfig().getString("messages.requesterOffline"));
+                tpaManager.removeRequest(player);
                 return true;
             }
+            tpaManager.removeRequest(player);
             requester.teleport(player.getLocation());
             requester.sendMessage(main.getConfig().getString("messages.tpaAccepted").replace("{player}", player.getName()));
             player.sendMessage(main.getConfig().getString("messages.tpaAcceptedReceiver").replace("{player}", requester.getName()));
             return true;
         } else if (subcommand.equals("deny")) {
-            String targetUUID = player.getUniqueId().toString();
-            if (!pendingTPA.containsKey(targetUUID)) {
+            if (!tpaManager.hasRequest(player)) {
                 player.sendMessage(main.getConfig().getString("messages.noPendingTpa"));
                 return true;
             }
-            String requesterUUID = pendingTPA.remove(targetUUID);
-            Player requester = Bukkit.getPlayer(UUID.fromString(requesterUUID));
+            Player requester = tpaManager.getRequester(player);
+            tpaManager.removeRequest(player);
             if (requester != null) {
                 requester.sendMessage(main.getConfig().getString("messages.tpaDenied").replace("{player}", player.getName()));
             }
@@ -78,7 +78,7 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(main.getConfig().getString("messages.playerNotFound"));
                 return true;
             }
-            pendingTPA.put(target.getUniqueId().toString(), player.getUniqueId().toString());
+            tpaManager.addRequest(target, player);
             player.sendMessage(main.getConfig().getString("messages.tpaSent").replace("{player}", target.getName()));
             target.sendMessage(main.getConfig().getString("messages.tpaReceived").replace("{player}", player.getName()));
 
