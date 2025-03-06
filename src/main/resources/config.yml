@@ -8,10 +8,10 @@ messages:
   godModeToggled: "God mode for {player} is now {state}."
 
   usageOpenInv: "Usage: /openinv <player>"
-  openInvOpened: "You have opened the inventory of {player}."
+  openInvOpened: "You have opened {player}'s inventory."
 
   usageEnderchest: "Usage: /enderchest [player]"
-  enderchestOpened: "You have opened the Ender Chest of {player}."
+  enderchestOpened: "You have opened {player}'s Ender Chest."
 
   noItemInHand: "You must be holding an item to fix it."
   itemFixed: "Your held item has been fixed."

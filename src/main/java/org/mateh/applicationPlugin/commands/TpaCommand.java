@@ -2,7 +2,6 @@ package org.mateh.applicationPlugin.commands;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -60,7 +59,8 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
             requester.sendMessage(main.getConfig().getString("messages.tpaAccepted").replace("{player}", player.getName()));
             player.sendMessage(main.getConfig().getString("messages.tpaAcceptedReceiver").replace("{player}", requester.getName()));
             return true;
-        } else if (subcommand.equals("deny")) {
+        }
+        else if (subcommand.equals("deny")) {
             if (!tpaManager.hasRequest(player)) {
                 player.sendMessage(main.getConfig().getString("messages.noPendingTpa"));
                 return true;
@@ -72,36 +72,30 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
             }
             player.sendMessage(main.getConfig().getString("messages.tpaDeniedReceiver"));
             return true;
-        } else {
+        }
+        else {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
                 player.sendMessage(main.getConfig().getString("messages.playerNotFound"));
+                return true;
+            }
+            if (target.equals(player)) {
+                player.sendMessage(ChatColor.RED + "You cannot send a teleport request to yourself.");
                 return true;
             }
             tpaManager.addRequest(target, player);
             player.sendMessage(main.getConfig().getString("messages.tpaSent").replace("{player}", target.getName()));
             target.sendMessage(main.getConfig().getString("messages.tpaReceived").replace("{player}", player.getName()));
 
-            TextComponent accept = new TextComponent("[Accept]");
-            accept.setColor(ChatColor.GREEN);
-            accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpa accept"));
-            accept.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(
-                    net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT,
-                    new ComponentBuilder("Click to accept the teleport request").create()));
+            TextComponent acceptComponent = new TextComponent("[ACCEPT]");
+            acceptComponent.setColor(ChatColor.GREEN);
+            acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpa accept"));
 
-            TextComponent deny = new TextComponent("[Deny]");
-            deny.setColor(ChatColor.RED);
-            deny.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpa deny"));
-            deny.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(
-                    net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT,
-                    new ComponentBuilder("Click to deny the teleport request").create()));
+            TextComponent denyComponent = new TextComponent(" [DENY]");
+            denyComponent.setColor(ChatColor.RED);
+            denyComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpa deny"));
 
-            TextComponent message = new TextComponent(" ");
-            message.addExtra(accept);
-            message.addExtra(" or ");
-            message.addExtra(deny);
-
-            target.spigot().sendMessage(message);
+            target.spigot().sendMessage(acceptComponent, denyComponent);
             return true;
         }
     }
